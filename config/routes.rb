@@ -1,14 +1,22 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # Health check endpoint
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  # API routes
+  namespace :api do
+    resource :health, only: [ :show ]
+    # Add your API endpoints here
+    # Example:
+    # resources :posts, only: [ :index, :show, :create, :update, :destroy ]
+  end
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # Catch-all route for React SPA
+  # This must be the last route as it will match all paths not matched above
+  get "*path", to: "spa#index", constraints: ->(request) do
+    # Don't match API routes, Rails health check, or asset requests
+    !request.path.start_with?("/api", "/up", "/rails/", "/assets/", "/vite/", "/vite-dev/")
+  end
+
+  # Root route
+  root "spa#index"
 end
