@@ -24,8 +24,40 @@ A modern full-stack application with Rails 8.0.3 API backend and React 18 + Type
 
 ## Getting Started
 
-### 1. Initial Setup
+### 1. Environment Configuration
 
+Copy the environment template and configure your API credentials:
+
+```bash
+cp .env.example .env
+```
+
+Then edit `.env` and add your BoomNow API credentials:
+
+```bash
+BOOM_API_CLIENT_ID=your_actual_client_id
+BOOM_API_CLIENT_SECRET=your_actual_client_secret
+```
+
+**Getting API Credentials:**
+- Visit https://app.boomnow.com to obtain your API credentials
+- Replace the placeholder values in `.env` with your actual credentials
+
+### 2. Initial Setup
+
+Run the automated setup script (installs dependencies and prepares the database):
+
+```bash
+bin/setup
+```
+
+Or setup without starting the dev server:
+
+```bash
+bin/setup --skip-server
+```
+
+**Manual setup (alternative):**
 ```bash
 # Install dependencies
 bundle install
@@ -35,7 +67,7 @@ npm install
 bin/rails db:prepare
 ```
 
-### 2. Run Development Servers
+### 3. Run Development Servers
 
 ```bash
 # Start both Rails API and Vite dev servers
@@ -48,7 +80,7 @@ This will start:
 
 Visit **http://localhost:3000** to see your application.
 
-### 3. Run Servers Separately (Optional)
+### 4. Run Servers Separately (Optional)
 
 ```bash
 # Terminal 1: Rails server
@@ -59,6 +91,16 @@ bin/vite dev
 ```
 
 ## Development
+
+### Environment Variables
+
+The application uses environment variables for configuration. All required variables are documented in `.env.example`:
+
+**BoomNow API Integration:**
+- `BOOM_API_CLIENT_ID` - Your BoomNow API client ID
+- `BOOM_API_CLIENT_SECRET` - Your BoomNow API client secret
+
+**Security Note:** Never commit your `.env` file to version control. The `.env` file is already in `.gitignore`.
 
 ### Frontend Development
 
@@ -78,6 +120,13 @@ bin/vite build
 - `app/javascript/styles/` - CSS files
 
 ### Backend Development
+
+**Rails Console:**
+```bash
+bin/rails console
+# or short form
+bin/rails c
+```
 
 **API endpoints:**
 - All API routes are under `/api` namespace
@@ -103,6 +152,17 @@ bin/rails db:reset
 # Seed database
 bin/rails db:seed
 ```
+
+### Background Jobs
+
+The application uses Solid Queue for background job processing:
+
+```bash
+# Start background job worker
+bin/jobs
+```
+
+This is already included when you run `bin/dev`.
 
 ### Testing
 
@@ -132,14 +192,20 @@ bin/brakeman
 
 ## Deployment
 
-The application is containerized with Docker and supports Kamal deployment:
+The application is containerized with Docker and supports Kamal deployment. In production, the application uses **Thruster** as an HTTP accelerator for asset caching, compression, and X-Sendfile support.
 
 ```bash
 # Deploy with Kamal
 bin/kamal deploy
 
+# Setup Kamal configuration
+bin/kamal setup
+
 # Build Docker image
 docker build -t boom_interview_project .
+
+# Run Docker container in production
+docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value> --name boom_interview_project boom_interview_project
 ```
 
 ## Architecture
@@ -149,6 +215,17 @@ This is a **Single Page Application (SPA)** where:
 - Rails serves the initial HTML shell and provides API endpoints
 - Vite bundles frontend assets with TypeScript support
 - React Router manages navigation without page reloads
+
+### Multi-Database Setup
+
+The application uses multiple PostgreSQL databases for different concerns:
+
+- **Primary database:** Main application data
+- **Cache database:** Solid Cache storage (db-backed caching)
+- **Queue database:** Solid Queue job storage (background jobs)
+- **Cable database:** Solid Cable WebSocket storage (Action Cable)
+
+This architecture provides database-backed implementations of Rails caching, job processing, and WebSocket functionality without requiring Redis or other external services.
 
 ## Additional Resources
 
