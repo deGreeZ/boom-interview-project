@@ -193,3 +193,458 @@ code {
     background-color: rgba(0, 0, 0, 0.05);
   }
 }
+
+/* Property Search Page */
+.property-search-page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* Search Widget */
+.search-widget {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url('https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=1600&h=400&fit=crop');
+  background-size: cover;
+  background-position: center;
+  padding: 3rem 2rem;
+  margin-bottom: 2rem;
+}
+
+.search-widget-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.search-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.search-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #f8f8f8;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  transition: border-color 0.2s;
+}
+
+.search-input-wrapper:focus-within {
+  border-color: #646cff;
+}
+
+.search-input-wrapper .icon {
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.search-input {
+  border: none;
+  background: none;
+  flex: 1;
+  font-size: 1rem;
+  color: #333;
+  outline: none;
+  font-family: inherit;
+}
+
+.search-input::placeholder {
+  color: #999;
+}
+
+.dropdown-toggle {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #666;
+  cursor: pointer;
+  padding: 0.25rem;
+  margin-left: 0.5rem;
+}
+
+.location-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  overflow: hidden;
+}
+
+.location-option {
+  padding: 0.875rem 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s;
+  color: #333;
+  text-align: left;
+}
+
+.location-option:hover {
+  background-color: #f5f5f5;
+}
+
+.location-option .icon {
+  margin-right: 0.75rem;
+  font-size: 1rem;
+}
+
+.counter-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f8f8f8;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  gap: 1rem;
+}
+
+.counter-btn {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  color: #333;
+}
+
+.counter-btn:hover {
+  background-color: #f5f5f5;
+  border-color: #646cff;
+}
+
+.counter-value {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  min-width: 2rem;
+  text-align: center;
+}
+
+.search-btn {
+  background-color: #4a4e89;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+  font-family: inherit;
+  align-self: flex-end;
+}
+
+.search-btn:hover {
+  background-color: #3a3e6d;
+}
+
+.search-btn .icon {
+  font-size: 1.1rem;
+}
+
+/* Property Search Content */
+.property-search-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem 3rem;
+}
+
+.search-results-header {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.search-results-header h2 {
+  color: #333;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+/* Property List */
+.property-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  gap: 2rem;
+}
+
+.no-results {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Property Card */
+.property-card {
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.property-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.property-image-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.property-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-dots {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  transition: background-color 0.2s;
+}
+
+.dot.active {
+  background-color: white;
+}
+
+.property-details {
+  padding: 1.5rem;
+}
+
+.property-header {
+  margin-bottom: 0.5rem;
+}
+
+.property-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  text-align: left;
+}
+
+.rating {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+}
+
+.property-location {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  text-align: left;
+}
+
+.property-specs {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.property-price {
+  display: flex;
+  align-items: baseline;
+  text-align: left;
+}
+
+.price-amount {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.price-period {
+  font-size: 1rem;
+  color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .property-list {
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .search-widget {
+    padding: 2rem 1rem;
+  }
+
+  .search-widget-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-field {
+    width: 100%;
+  }
+
+  .search-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .property-list {
+    grid-template-columns: 1fr;
+  }
+
+  .property-search-content {
+    padding: 0 1rem 2rem;
+  }
+
+  .search-results-header h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Light mode adjustments for property search */
+@media (prefers-color-scheme: light) {
+  .property-search-page {
+    background-color: #f5f5f5;
+  }
+
+  .search-widget-container,
+  .property-card {
+    background-color: white;
+  }
+
+  .search-label,
+  .property-name,
+  .price-amount {
+    color: #1a1a1a;
+  }
+
+  .counter-value {
+    color: #1a1a1a;
+  }
+
+  .search-results-header h2 {
+    color: #1a1a1a;
+  }
+}
+
+/* Dark mode adjustments for property search */
+@media (prefers-color-scheme: dark) {
+  .property-search-page {
+    background-color: #1a1a1a;
+  }
+
+  .search-widget-container,
+  .property-card {
+    background-color: #2a2a2a;
+  }
+
+  .search-input-wrapper,
+  .counter-wrapper {
+    background-color: #1a1a1a;
+    border-color: #3a3a3a;
+  }
+
+  .search-input,
+  .counter-value {
+    color: #e0e0e0;
+  }
+
+  .search-label,
+  .property-name,
+  .price-amount {
+    color: #e0e0e0;
+  }
+
+  .property-location,
+  .property-specs,
+  .price-period {
+    color: #a0a0a0;
+  }
+
+  .counter-btn {
+    background-color: #2a2a2a;
+    border-color: #3a3a3a;
+    color: #e0e0e0;
+  }
+
+  .counter-btn:hover {
+    background-color: #3a3a3a;
+  }
+
+  .location-dropdown {
+    background-color: #2a2a2a;
+    border-color: #3a3a3a;
+  }
+
+  .location-option {
+    color: #e0e0e0;
+  }
+
+  .location-option:hover {
+    background-color: #3a3a3a;
+  }
+
+  .search-results-header h2 {
+    color: #e0e0e0;
+  }
+
+  .no-results {
+    color: #a0a0a0;
+  }
+}

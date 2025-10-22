@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 function Home() {
   const [health, setHealth] = useState<string>('Checking...')
@@ -31,6 +32,13 @@ function Home() {
         <div className="info-card">
           <h2>API Health Check</h2>
           <p className="health-status">{health}</p>
+        </div>
+
+        <div className="info-card">
+          <h2>Demo Pages</h2>
+          <ul>
+            <li><Link to="/properties">Property Search</Link> - Browse vacation rentals</li>
+          </ul>
         </div>
 
         <div className="info-card">
