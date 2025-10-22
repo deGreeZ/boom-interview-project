@@ -8,7 +8,7 @@ function Home() {
     // Example API call to Rails backend
     fetch('/up')
       .then(response => response.text())
-      .then(data => setHealth('Rails API is running!'))
+      .then(() => setHealth('Rails API is running!'))
       .catch(() => setHealth('Rails API connection failed'))
   }, [])
 

@@ -41,6 +41,9 @@ jobs:
       - name: Scan for security vulnerabilities in JavaScript dependencies
         run: npm audit --audit-level=high
 
+      - name: Type check TypeScript
+        run: npx tsc --noEmit
+
   lint:
     runs-on: ubuntu-latest
     steps:
