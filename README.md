@@ -19,7 +19,7 @@ A modern full-stack application with Rails 8.0.3 API backend and React 18 + Type
 
 ## Prerequisites
 
-- Ruby 3.3.7
+- Ruby 3.4.7
 - Node.js (latest LTS recommended)
 - PostgreSQL
 - Bundler

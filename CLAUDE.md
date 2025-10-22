@@ -10,7 +10,7 @@ Rails 8.0.3 API backend with React 18 SPA frontend. The application uses:
 - **Routing:** React Router v6 (client-side)
 - **Infrastructure:** Solid Cache, Solid Queue, and Solid Cable for database-backed operations
 
-**Ruby version:** 3.3.7
+**Ruby version:** 3.4.7
 **Node version:** (check `.nvmrc` or use latest LTS)
 
 ## Development Commands
