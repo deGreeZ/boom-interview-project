@@ -5,9 +5,12 @@ Rails.application.routes.draw do
   # API routes
   namespace :api do
     resource :health, only: [ :show ]
-    # Add your API endpoints here
-    # Example:
-    # resources :posts, only: [ :index, :show, :create, :update, :destroy ]
+
+    # BoomNow API proxy endpoints
+    scope :boom, controller: :boom do
+      get "cities"
+      get "listings"
+    end
   end
 
   # Catch-all route for React SPA

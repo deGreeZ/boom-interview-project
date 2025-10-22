@@ -5,9 +5,6 @@ module Api
     # In production, you should use token-based authentication
     skip_before_action :verify_authenticity_token
 
-    # Ensure all API responses are JSON
-    respond_to :json
-
     # Handle common exceptions
     rescue_from ActiveRecord::RecordNotFound, with: :not_found
     rescue_from ActiveRecord::RecordInvalid, with: :unprocessable_entity
