@@ -34,19 +34,26 @@ export default function PropertyCard({ property }: PropertyCardProps) {
       <div className="property-details">
         <div className="property-header">
           <h3 className="property-name">
-            {property.name} <span className="rating">⭐ {property.rating}</span>
+            {property.name}
+            {property.rating > 0 && <span className="rating">⭐ {property.rating}</span>}
           </h3>
         </div>
 
         <div className="property-location">{property.location}</div>
 
         <div className="property-specs">
-          {property.guests} Guests | {property.bedrooms} Bedroom{property.bedrooms > 1 ? 's' : ''} | {property.bathrooms} Bathroom{property.bathrooms > 1 ? 's' : ''}
+          {property.guests} Guest{property.guests !== 1 ? 's' : ''} | {property.bedrooms} Bedroom{property.bedrooms !== 1 ? 's' : ''} | {property.bathrooms} Bathroom{property.bathrooms !== 1 ? 's' : ''}
         </div>
 
         <div className="property-price">
-          <span className="price-amount">${property.price.toLocaleString()}</span>
-          <span className="price-period"> · {property.nights} Nights</span>
+          {property.price > 0 ? (
+            <>
+              <span className="price-amount">${property.price.toLocaleString()}</span>
+              {property.nights > 0 && <span className="price-period"> · {property.nights} Night{property.nights !== 1 ? 's' : ''}</span>}
+            </>
+          ) : (
+            <span className="price-amount">Contact for pricing</span>
+          )}
         </div>
       </div>
     </div>
