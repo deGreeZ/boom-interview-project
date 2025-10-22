@@ -59,4 +59,19 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+
+  # Code coverage reporting [https://github.com/simplecov-ruby/simplecov]
+  gem "simplecov", require: false
+
+  # Clean database state between tests [https://github.com/DatabaseCleaner/database_cleaner]
+  gem "database_cleaner-active_record"
+
+  # Factory pattern for test data [https://github.com/thoughtbot/factory_bot_rails]
+  gem "factory_bot_rails"
+
+  # Stub HTTP requests in tests [https://github.com/bblimke/webmock]
+  gem "webmock"
+
+  # Matchers for common Rails functionality [https://github.com/thoughtbot/shoulda-matchers]
+  gem "shoulda-matchers"
 end

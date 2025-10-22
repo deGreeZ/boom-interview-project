@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   # API routes
   namespace :api do
-    resource :health, only: [ :show ]
+    resource :health, only: [ :show ], controller: "health"
 
     # BoomNow API proxy endpoints
     scope :boom, controller: :boom do
