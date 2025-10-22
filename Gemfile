@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.0.3"
+gem "rails", "~> 8.1.0"
 # Use Vite for modern frontend build [https://github.com/ElMassimo/vite_ruby]
 gem "vite_rails"
 # Use postgresql as the database for Active Record
