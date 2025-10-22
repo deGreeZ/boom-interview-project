@@ -37,13 +37,34 @@ class BoomApiClient
 
   private
 
+  # Configure HTTP client with proper SSL settings
+  # @param uri [URI] The URI to connect to
+  # @return [Net::HTTP] Configured HTTP client
+  def configure_http(uri)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+
+    # Configure SSL context to use system CA certificates
+    # Set minimum TLS version to 1.2 for security
+    http.min_version = OpenSSL::SSL::TLS1_2_VERSION
+
+    # Create a cert store that uses system CA certificates
+    # By default, CRL checking is disabled unless explicitly enabled
+    # This prevents "unable to get certificate CRL" errors
+    # while still validating the certificate chain against trusted CAs
+    store = OpenSSL::X509::Store.new
+    store.set_default_paths
+    http.cert_store = store
+
+    http
+  end
+
   # Authenticate and get access token
   # @return [String] Access token
   def authenticate
     uri = URI("#{BASE_URL}/auth/token")
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+    http = configure_http(uri)
 
     request = Net::HTTP::Post.new(uri.path, {
       "Content-Type" => "application/json",
@@ -96,9 +117,7 @@ class BoomApiClient
       uri.query = URI.encode_www_form(params.compact)
     end
 
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+    http = configure_http(uri)
 
     request_class = case method
     when :get then Net::HTTP::Get
