@@ -21,38 +21,15 @@ BOOM_API_CLIENT_SECRET=your_client_secret_here
 
 **Note:** The `.env` file is already in `.gitignore` to prevent accidentally committing credentials.
 
-### 2. Alternative: Use Rails Credentials
-
-For production, you can use Rails encrypted credentials instead of environment variables:
-
-```bash
-bin/rails credentials:edit
-```
-
-Add your credentials:
-
-```yaml
-boom_api:
-  client_id: your_client_id_here
-  client_secret: your_client_secret_here
-```
-
-Then update the client initialization in your code:
-
-```ruby
-client = BoomApiClient.new(
-  client_id: Rails.application.credentials.boom_api[:client_id],
-  client_secret: Rails.application.credentials.boom_api[:client_secret]
-)
-```
+**Important:** The BoomAPI client uses the Singleton pattern, so you should always use `BoomApiClient.instance` to access the client rather than creating new instances. The client will automatically manage authentication tokens across all requests.
 
 ## Usage
 
 ### Direct Usage in Ruby Code
 
 ```ruby
-# Initialize the client
-client = BoomApiClient.new
+# Get the singleton client instance
+client = BoomApiClient.instance
 
 # Get list of available cities
 cities = client.get_cities
@@ -153,7 +130,7 @@ Response:
 ```ruby
 class MyController < ApplicationController
   def search_properties
-    client = BoomApiClient.new
+    client = BoomApiClient.instance
 
     @listings = client.get_listings(
       city: params[:city],
@@ -177,7 +154,7 @@ class FetchListingsJob < ApplicationJob
   queue_as :default
 
   def perform(city)
-    client = BoomApiClient.new
+    client = BoomApiClient.instance
     listings = client.get_listings(city: city)
 
     # Process listings...
@@ -187,11 +164,18 @@ end
 
 ## Features
 
+### Singleton Pattern
+
+The client uses the Singleton pattern to ensure:
+- Only one instance exists across the entire application
+- Authentication tokens are shared and reused across all requests
+- No redundant authentication requests
+
 ### Automatic Token Management
 
 The client automatically:
 - Requests an access token on first use
-- Caches the token until expiration
+- Caches the token until expiration (with 60-second buffer)
 - Refreshes the token when it expires
 - Includes the Bearer token in all API requests
 
@@ -220,16 +204,18 @@ end
 
 ### BoomApiClient
 
-#### Methods
+#### Getting the Instance
 
-##### `initialize(client_id: nil, client_secret: nil)`
+##### `BoomApiClient.instance`
 
-Creates a new BoomAPI client instance.
+Returns the singleton instance of the BoomAPI client. The client is automatically initialized with credentials from environment variables:
 
-- `client_id` - API client ID (defaults to `ENV['BOOM_API_CLIENT_ID']`)
-- `client_secret` - API client secret (defaults to `ENV['BOOM_API_CLIENT_SECRET']`)
+- `ENV['BOOM_API_CLIENT_ID']` - API client ID
+- `ENV['BOOM_API_CLIENT_SECRET']` - API client secret
 
 Raises `AuthenticationError` if credentials are missing.
+
+#### Methods
 
 ##### `get_cities`
 
@@ -266,10 +252,10 @@ bin/rails console
 ```
 
 ```ruby
-# Initialize client
-client = BoomApiClient.new
+# Get the singleton client instance
+client = BoomApiClient.instance
 
-# Test authentication
+# Test authentication (happens automatically on first request)
 client.send(:authenticate)
 
 # Test get_cities

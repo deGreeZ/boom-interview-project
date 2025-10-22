@@ -28,7 +28,7 @@ module Api
     private
 
     def initialize_client
-      @client = BoomApiClient.new
+      @client = BoomApiClient.instance
     end
 
     def listings_params

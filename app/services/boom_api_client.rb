@@ -1,6 +1,9 @@
 # BoomAPI Client for interacting with BoomNow API
 # Handles authentication, token management, and API requests
+# Uses Singleton pattern to maintain a single authenticated instance
 class BoomApiClient
+  include Singleton
+
   class AuthenticationError < StandardError; end
   class ApiError < StandardError; end
 
@@ -8,9 +11,9 @@ class BoomApiClient
 
   attr_reader :client_id, :client_secret
 
-  def initialize(client_id: nil, client_secret: nil)
-    @client_id = client_id || ENV["BOOM_API_CLIENT_ID"]
-    @client_secret = client_secret || ENV["BOOM_API_CLIENT_SECRET"]
+  def initialize
+    @client_id = ENV["BOOM_API_CLIENT_ID"]
+    @client_secret = ENV["BOOM_API_CLIENT_SECRET"]
     @token = nil
     @token_expires_at = nil
 
@@ -68,9 +71,10 @@ class BoomApiClient
   end
 
   # Check if token is valid and not expired
+  # Uses 60 second buffer before expiration to avoid edge cases
   # @return [Boolean]
   def token_valid?
-    @token.present? && @token_expires_at.present? && Time.current < @token_expires_at
+    @token.present? && @token_expires_at.present? && Time.current < (@token_expires_at - 60.seconds)
   end
 
   # Get valid token, refreshing if necessary
