@@ -330,6 +330,16 @@ code {
   overflow: hidden;
 }
 
+.date-picker-error {
+  background-color: #fee;
+  color: #c33;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  border-bottom: 1px solid #fcc;
+}
+
 .no-results {
   color: #999;
 }
@@ -670,6 +680,12 @@ code {
 
   .calendar-dropdown {
     background-color: #2a2a2a;
+  }
+
+  .date-picker-error {
+    background-color: #3a1a1a;
+    color: #ff6b6b;
+    border-bottom-color: #5a2a2a;
   }
 }
 

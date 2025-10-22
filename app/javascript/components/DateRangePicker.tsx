@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { DateRange } from 'react-date-range';
-import { addDays } from 'date-fns';
+import { addDays, addMonths, endOfMonth, differenceInDays } from 'date-fns';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 
@@ -19,7 +19,11 @@ export default function DateRangePicker({ onDateChange, checkIn, checkOut }: Dat
       key: 'selection'
     }
   ]);
+  const [error, setError] = useState<string | null>(null);
   const calendarRef = useRef<HTMLDivElement>(null);
+
+  // Calculate max date: 3 months from now, end of that month
+  const maxDate = endOfMonth(addMonths(new Date(), 3));
 
   // Close calendar when clicking outside
   useEffect(() => {
@@ -40,7 +44,30 @@ export default function DateRangePicker({ onDateChange, checkIn, checkOut }: Dat
 
   const handleSelect = (ranges: any) => {
     const { selection } = ranges;
+    const daysDifference = differenceInDays(selection.endDate, selection.startDate);
+
+    // Always update the state to show the selection
     setDateRange([selection]);
+
+    // If user is still selecting (clicking first date), don't validate yet
+    if (daysDifference === 0) {
+      setError(null);
+      return;
+    }
+
+    // Validate the completed range
+    if (daysDifference < 1) {
+      setError('Minimum stay is 1 night');
+      return;
+    }
+
+    if (daysDifference > 14) {
+      setError('Maximum stay is 14 nights');
+      return;
+    }
+
+    // Clear error and notify parent if validation passes
+    setError(null);
 
     // Format dates as YYYY-MM-DD for the parent component
     const checkInDate = selection.startDate.toISOString().split('T')[0];
@@ -76,12 +103,18 @@ export default function DateRangePicker({ onDateChange, checkIn, checkOut }: Dat
 
       {showCalendar && (
         <div className="calendar-dropdown">
+          {error && (
+            <div className="date-picker-error">
+              {error}
+            </div>
+          )}
           <DateRange
             ranges={dateRange}
             onChange={handleSelect}
             months={2}
             direction="horizontal"
             minDate={new Date()}
+            maxDate={maxDate}
             rangeColors={['#4a5568']}
             showDateDisplay={false}
           />
