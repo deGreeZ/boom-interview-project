@@ -1,5 +1,7 @@
 # Boom Interview Project
 
+![CI](https://github.com/deGreeZ/boom-interview-project/actions/workflows/ci.yml/badge.svg)
+
 A modern full-stack application with Rails 8.0.3 API backend and React 18 + TypeScript frontend.
 
 ## Tech Stack
