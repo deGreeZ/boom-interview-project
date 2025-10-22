@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 interface SearchWidgetProps {
   onSearch: (searchParams: SearchParams) => void;
@@ -12,8 +13,6 @@ export interface SearchParams {
   children: number;
 }
 
-const cities = ['Hollywood', 'Pompano Beach', 'Deerfield Beach', 'Plantation'];
-
 export default function SearchWidget({ onSearch }: SearchWidgetProps) {
   const [location, setLocation] = useState('');
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
@@ -21,6 +20,40 @@ export default function SearchWidget({ onSearch }: SearchWidgetProps) {
   const [checkOut, setCheckOut] = useState('');
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
+  const [allCities, setAllCities] = useState<string[]>([]);
+  const [filteredCities, setFilteredCities] = useState<string[]>([]);
+  const [searchInput, setSearchInput] = useState('');
+  const [isLoadingCities, setIsLoadingCities] = useState(true);
+
+  // Fetch cities from API on component mount
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/boom/cities');
+        const citiesArray = response.data.cities || [];
+        setAllCities(citiesArray);
+        setFilteredCities(citiesArray);
+      } catch (error) {
+        console.error('Error fetching cities:', error);
+      } finally {
+        setIsLoadingCities(false);
+      }
+    };
+
+    fetchCities();
+  }, []);
+
+  // Filter cities based on search input
+  useEffect(() => {
+    if (searchInput.trim() === '') {
+      setFilteredCities(allCities);
+    } else {
+      const filtered = allCities.filter(city =>
+        city.toLowerCase().includes(searchInput.toLowerCase())
+      );
+      setFilteredCities(filtered);
+    }
+  }, [searchInput, allCities]);
 
   const handleSearch = () => {
     onSearch({ location, checkIn, checkOut, adults, children });
@@ -28,7 +61,19 @@ export default function SearchWidget({ onSearch }: SearchWidgetProps) {
 
   const selectCity = (city: string) => {
     setLocation(city);
+    setSearchInput('');
     setShowLocationDropdown(false);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchInput(value);
+    setLocation(value);
+    setShowLocationDropdown(true);
+  };
+
+  const handleInputFocus = () => {
+    setShowLocationDropdown(true);
   };
 
   return (
@@ -43,8 +88,8 @@ export default function SearchWidget({ onSearch }: SearchWidgetProps) {
               type="text"
               placeholder="Select city"
               value={location}
-              readOnly
-              onClick={() => setShowLocationDropdown(!showLocationDropdown)}
+              onChange={handleInputChange}
+              onFocus={handleInputFocus}
               className="search-input"
             />
             <button
@@ -56,16 +101,26 @@ export default function SearchWidget({ onSearch }: SearchWidgetProps) {
           </div>
           {showLocationDropdown && (
             <div className="location-dropdown">
-              {cities.map((city) => (
-                <div
-                  key={city}
-                  className="location-option"
-                  onClick={() => selectCity(city)}
-                >
-                  <span className="icon">📍</span>
-                  {city}
+              {isLoadingCities ? (
+                <div className="location-option no-results">
+                  Loading cities...
                 </div>
-              ))}
+              ) : filteredCities.length > 0 ? (
+                filteredCities.map((city) => (
+                  <div
+                    key={city}
+                    className="location-option"
+                    onClick={() => selectCity(city)}
+                  >
+                    <span className="icon">📍</span>
+                    {city}
+                  </div>
+                ))
+              ) : (
+                <div className="location-option no-results">
+                  No cities found
+                </div>
+              )}
             </div>
           )}
         </div>
