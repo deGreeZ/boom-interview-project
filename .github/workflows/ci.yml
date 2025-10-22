@@ -56,8 +56,20 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Lint code for consistent style
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install JavaScript dependencies
+        run: npm ci
+
+      - name: Lint Ruby code for consistent style
         run: bin/rubocop -f github
+
+      - name: Lint JavaScript/TypeScript code for consistent style
+        run: npm run lint
 
   test:
     runs-on: ubuntu-latest
