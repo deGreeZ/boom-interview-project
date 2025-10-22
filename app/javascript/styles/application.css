@@ -314,6 +314,26 @@ code {
   font-size: 1rem;
 }
 
+.date-range-picker {
+  position: relative;
+}
+
+.calendar-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border-radius: 12px;
+  margin-top: 0.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.no-results {
+  color: #999;
+}
+
 .counter-wrapper {
   display: flex;
   align-items: center;
@@ -646,5 +666,9 @@ code {
 
   .no-results {
     color: #a0a0a0;
+  }
+
+  .calendar-dropdown {
+    background-color: #2a2a2a;
   }
 }

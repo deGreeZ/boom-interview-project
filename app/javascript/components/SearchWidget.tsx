@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import DateRangePicker from './DateRangePicker';
 
 interface SearchWidgetProps {
   onSearch: (searchParams: SearchParams) => void;
@@ -128,16 +129,14 @@ export default function SearchWidget({ onSearch }: SearchWidgetProps) {
         {/* Check-in / Check-out */}
         <div className="search-field">
           <label className="search-label">Check-in / Check-out</label>
-          <div className="search-input-wrapper">
-            <span className="icon">📅</span>
-            <input
-              type="date"
-              placeholder="Select date"
-              value={checkIn}
-              onChange={(e) => setCheckIn(e.target.value)}
-              className="search-input"
-            />
-          </div>
+          <DateRangePicker
+            onDateChange={(checkInDate, checkOutDate) => {
+              setCheckIn(checkInDate);
+              setCheckOut(checkOutDate);
+            }}
+            checkIn={checkIn}
+            checkOut={checkOut}
+          />
         </div>
 
         {/* Adults */}
