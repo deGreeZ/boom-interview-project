@@ -42,7 +42,7 @@ export default function DateRangePicker({ onDateChange, checkIn, checkOut }: Dat
     };
   }, [showCalendar]);
 
-  const handleSelect = (ranges: any) => {
+  const handleSelect = (ranges: { selection: { startDate: Date; endDate: Date; key: string } }) => {
     const { selection } = ranges;
     const daysDifference = differenceInDays(selection.endDate, selection.startDate);
 

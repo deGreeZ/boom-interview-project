@@ -77,7 +77,7 @@ describe('PropertyList', () => {
     const { container } = render(<PropertyList properties={mockProperties} />)
 
     const propertyCards = container.querySelectorAll('.property-card')
-    propertyCards.forEach((card, index) => {
+    propertyCards.forEach((card) => {
       expect(card).toBeInTheDocument()
     })
   })

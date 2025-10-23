@@ -1,8 +1,31 @@
 import { useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import SearchWidget, { SearchParams } from '../components/SearchWidget';
 import PropertyList from '../components/PropertyList';
 import { Property } from '../components/PropertyCard';
+
+interface ApiListing {
+  id: number;
+  title?: string;
+  name?: string;
+  city_name?: string;
+  city?: string;
+  picture?: string;
+  pictures?: Array<{ original?: string }>;
+  rating?: number;
+  average_rating?: number;
+  star_rating?: number;
+  accommodates?: number;
+  beds?: number;
+  baths?: number;
+  price?: number;
+  extra_info?: {
+    current_price?: {
+      total_price?: number;
+      our_price?: number;
+    };
+  };
+}
 
 export default function PropertySearch() {
   const [properties, setProperties] = useState<Property[]>([]);
@@ -34,8 +57,8 @@ export default function PropertySearch() {
       const nights = calculateNights(searchParams.checkIn, searchParams.checkOut);
 
       // Parse the API response and transform it to our Property interface
-      const apiListings = response.data.listings || [];
-      const transformedProperties: Property[] = apiListings.map((listing: any) => {
+      const apiListings: ApiListing[] = response.data.listings || [];
+      const transformedProperties: Property[] = apiListings.map((listing) => {
         // Extract price with fallbacks
         const price = listing.extra_info?.current_price?.total_price ||
                      listing.extra_info?.current_price?.our_price ||
@@ -63,10 +86,11 @@ export default function PropertySearch() {
       });
 
       setProperties(transformedProperties);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error fetching listings:', err);
+      const error = err as AxiosError<{ error?: string }>;
       setError(
-        err.response?.data?.error ||
+        error.response?.data?.error ||
         'Failed to fetch listings. Please try again.'
       );
       setProperties([]);

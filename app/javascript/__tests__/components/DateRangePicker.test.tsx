@@ -1,8 +1,6 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, afterEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import DateRangePicker from '~/components/DateRangePicker'
-import { addDays } from 'date-fns'
 
 describe('DateRangePicker', () => {
   const mockOnDateChange = vi.fn()
@@ -14,7 +12,7 @@ describe('DateRangePicker', () => {
   it('renders with default date range (today to 7 days from now)', () => {
     render(<DateRangePicker onDateChange={mockOnDateChange} />)
 
-    const input = screen.getByRole('textbox')
+    const input = screen.getByRole('textbox') as HTMLInputElement
     expect(input).toBeInTheDocument()
     // Check for date format pattern (e.g., "Jan 15, 2024 - Jan 22, 2024")
     expect(input.value).toMatch(/[A-Z][a-z]{2} \d{1,2}, \d{4} - [A-Z][a-z]{2} \d{1,2}, \d{4}/)

@@ -23,8 +23,6 @@ export const handlers = [
   http.get('http://localhost:3000/api/boom/listings', ({ request }) => {
     const url = new URL(request.url)
     const city = url.searchParams.get('city')
-    const checkIn = url.searchParams.get('check_in')
-    const checkOut = url.searchParams.get('check_out')
     const adults = url.searchParams.get('adults')
     const children = url.searchParams.get('children')
 

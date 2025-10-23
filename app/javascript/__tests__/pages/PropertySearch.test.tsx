@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import PropertySearch from '~/pages/PropertySearch'
 import { server } from '../mocks/server'
@@ -129,7 +129,7 @@ describe('PropertySearch', () => {
     })
 
     it('displays property results with price information', async () => {
-      const { container } = render(<PropertySearch />)
+      render(<PropertySearch />)
 
       // Select city and search
       const input = screen.getByPlaceholderText('Select city')
