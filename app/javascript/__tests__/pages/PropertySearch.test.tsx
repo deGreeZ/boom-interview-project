@@ -369,14 +369,16 @@ describe('PropertySearch', () => {
         expect(capturedParams).not.toBeNull()
       }, { timeout: 3000 })
 
-      expect(capturedParams?.get('city')).toBe('Chicago')
-      expect(capturedParams?.get('adults')).toBe('2')
-      expect(capturedParams?.get('children')).toBe('1')
+      // TypeScript needs explicit assertion after async waitFor
+      expect(capturedParams).not.toBeNull()
+      expect(capturedParams!.get('city')).toBe('Chicago')
+      expect(capturedParams!.get('adults')).toBe('2')
+      expect(capturedParams!.get('children')).toBe('1')
       // Date parameters may be empty in tests since DateRangePicker doesn't
       // propagate default dates until user interaction
       // If they exist, they should be in correct format (YYYY-MM-DD)
-      const checkIn = capturedParams?.get('check_in')
-      const checkOut = capturedParams?.get('check_out')
+      const checkIn = capturedParams!.get('check_in')
+      const checkOut = capturedParams!.get('check_out')
       if (checkIn && checkIn !== '') {
         expect(checkIn).toMatch(/^\d{4}-\d{2}-\d{2}$/)
       }

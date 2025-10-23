@@ -42,7 +42,8 @@ export default function DateRangePicker({ onDateChange, checkIn, checkOut }: Dat
     };
   }, [showCalendar]);
 
-  const handleSelect = (ranges: { selection: { startDate: Date; endDate: Date; key: string } }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleSelect = (ranges: any) => {
     const { selection } = ranges;
     const daysDifference = differenceInDays(selection.endDate, selection.startDate);
 
