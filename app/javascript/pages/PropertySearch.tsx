@@ -25,19 +25,13 @@ export default function PropertySearch() {
       if (searchParams.adults) params.adults = searchParams.adults;
       if (searchParams.children) params.children = searchParams.children;
 
-      console.log('Search params:', searchParams);
-      console.log('API params:', params);
-
       // Make API request to the listings endpoint
       const response = await axios.get('http://localhost:3000/api/boom/listings', {
         params,
       });
 
-      console.log('API response:', response.data);
-
       // Calculate nights once
       const nights = calculateNights(searchParams.checkIn, searchParams.checkOut);
-      console.log('Calculated nights:', nights, 'from', searchParams.checkIn, 'to', searchParams.checkOut);
 
       // Parse the API response and transform it to our Property interface
       const apiListings = response.data.listings || [];
@@ -68,7 +62,6 @@ export default function PropertySearch() {
         };
       });
 
-      console.log('Transformed properties:', transformedProperties);
       setProperties(transformedProperties);
     } catch (err: any) {
       console.error('Error fetching listings:', err);
@@ -84,7 +77,6 @@ export default function PropertySearch() {
 
   const calculateNights = (checkIn: string, checkOut: string): number => {
     if (!checkIn || !checkOut) {
-      console.log('Missing dates:', { checkIn, checkOut });
       return 0;
     }
 
@@ -94,7 +86,6 @@ export default function PropertySearch() {
 
       // Check if dates are valid
       if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-        console.log('Invalid dates:', { checkIn, checkOut });
         return 0;
       }
 
